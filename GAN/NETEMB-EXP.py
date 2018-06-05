@@ -3,7 +3,7 @@ from config import Config
 from Data_Util import DataUtil
 
 def train_and_test():
-    data = DataUtil('/ldev/wsx/tmp/netemb/github/dataset/generated_data/eca_blogCatalog3.txt.labeled.reindex' )
+    data = DataUtil('')
     config = Config()
     config.x_dim = data.num_vertex
     config.input_dim = data.num_vertex
@@ -25,7 +25,7 @@ def train_and_test():
             print(res)
 
 def infer():
-    data = DataUtil('/ldev/wsx/tmp/netemb/github/dataset/generated_data/eca_blogCatalog3.txt.labeled.reindex',sample_mode=False)
+    data = DataUtil('',sample_mode=False)
     config = Config()
     config.x_dim = data.num_vertex
     config.input_dim = data.num_vertex
