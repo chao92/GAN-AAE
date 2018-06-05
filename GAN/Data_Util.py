@@ -5,7 +5,7 @@ import numpy as np
 from multiprocessing import Pool  
 
 class DataUtil:
-    def __init__(self, reindex_path=r'C:\Users\v-sixwu\Downloads\eca_blogCatalog3.txt.labeled.reindex',max_line = -1,test_rate=0, sample_mode=True):
+    def __init__(self, reindex_path=r'',max_line = -1,test_rate=0, sample_mode=True):
         log('loading Edge-Centic dataset form : %s' % (reindex_path))
         vertex_set = set()
         labels_set = set()
@@ -86,7 +86,6 @@ class DataUtil:
         log('transforming the done!')
         log('train size : %d,  test size: %d' % (self.train_num, self.test_num))
 
-        # 全局的计步器和局部的计步器
         self.global_steps = 0
         self.epcoh_steps = 0
         self.eval_steps = 0
