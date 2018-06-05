@@ -1,7 +1,7 @@
 # GAN
 ## File Structure
 --AgentForEdgeGAN.py [main file for step 1]  
---Pridictor.py [main file for step 2]
+--Pridictor.py [main file for step 2]  
 --Config.py [configuration file]
 --Other code
 **--model** [Location of the check points]  
