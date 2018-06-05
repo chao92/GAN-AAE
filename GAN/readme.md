@@ -1,4 +1,2 @@
-#GAN
-##File Structure
-
-
+# GAN
+## File Structure
