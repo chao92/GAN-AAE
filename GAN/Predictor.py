@@ -11,7 +11,7 @@ def main(arg):
 
 
     debug = False
-    path = arg[0] # '/ldev/wsx/tmp/netemb/github/dataset/generated_data/eco_blogCatalog3.txt.labeled.reindex'
+    path = arg[0]
     config = Config()
     if not debug:
         print('normal mode')
@@ -22,7 +22,7 @@ def main(arg):
         config.batch_size = 16
         data.generate_negative_set()
     else:
-        path = r'C:\Users\v-sixwu\Downloads\all.txt'
+        path = r''
         data = DataUtil(path)
         config.x_dim = data.num_vertex
         config.input_dim = data.num_vertex
@@ -82,10 +82,10 @@ def main(arg):
             except EOFError as e:
                 print(e)
                 print("Predicting is finished, total avg : %.4f" % (acc/total))
-                if float(acc)/float(total)>0.93:
-                    res = subprocess.check_output(["mv", "./model/youtube", "./model/youtube-{}".format(float(acc)/float(total))])
-                    res = subprocess.check_output(["mkdir", "./model/youtube"])
-                    res = subprocess.check_output(["cp", "./res/eco_youtube_gan.txt", "./res/eco_youtube_gan_{}.txt".format(float(acc)/float(total))])
+                #if float(acc)/float(total)>0.93:
+                    #res = subprocess.check_output(["mv", "./model/youtube", "./model/youtube-{}".format(float(acc)/float(total))])
+                    #res = subprocess.check_output(["mkdir", "./model/youtube"])
+                    #res = subprocess.check_output(["cp", "./res/eco_youtube_gan.txt", "./res/eco_youtube_gan_{}.txt".format(float(acc)/float(total))])
                 break;
 
 
