@@ -23,12 +23,6 @@ class EdgeGAN:
 
 
     def create_discriminator_or_learner(self, name, x, y, device = "/gpu:0"):
-        """
-        TODO 调整计算方式适应Vertex的数量，压缩D_W1的数量
-        :param x: batch_size * dimension
-        :param y: batch_size * num_class
-        :return:
-        """
         with tf.variable_scope(name, reuse=tf.AUTO_REUSE):
             # Transform Y
             y = self.y_to_probs(y)
@@ -87,12 +81,6 @@ class EdgeGAN:
 
 
     def _create_generator(self, name, y, z):
-        """
-        根据y生成X
-        :param name:
-        :param y:
-        :return:
-        """
         config = self.config
         with tf.variable_scope(name):
             dtype = config.dtype
@@ -106,13 +94,6 @@ class EdgeGAN:
         return GX, trainable_parameters
 
     def create_classifer(self,name,x):
-        """
-        分类器
-        :param name:
-        :param x:
-        :param y:
-        :return:
-        """
         config = self.config
         with tf.variable_scope(name, reuse=tf.AUTO_REUSE):
             dtype = config.dtype
@@ -125,7 +106,6 @@ class EdgeGAN:
         return logits, probs, trainable_parameters
 
     def _sample_Z(self, m):
-        '''Uniform prior for G(Z)'''
         return np.random.uniform(-1., 1., size=[m, self.config.z_dim])
 
     def clip_prob(self, x):
@@ -134,16 +114,6 @@ class EdgeGAN:
 
     def build_graph(self):
         config = self.config
-
-
-        """
-        Graph
-        """
-        # TODO
-
-        """
-        Placeholders
-        """
         self.global_step = tf.Variable(initial_value=0, dtype=tf.int64, trainable=False)
         self.Xb = tf.placeholder(tf.bool, shape=[None, config.x_dim], name='X')
         self.Y = tf.placeholder(config.dtype, shape=[None, config.num_class], name='Y')
@@ -154,19 +124,11 @@ class EdgeGAN:
         self.tb = tf.placeholder(tf.bool, shape=[None, config.x_dim], name='Tail')
         self.itb = tf.placeholder(tf.bool, shape=[None, config.x_dim], name='IncorrectTail')
 
-
-        """
-        Cast
-        """
         self.X = tf.cast(self.Xb, config.dtype)
         self.h = tf.cast(self.hb, config.dtype)
         self.ih = tf.cast(self.ihb, config.dtype)
         self.t = tf.cast(self.tb, config.dtype)
         self.it = tf.cast(self.itb, config.dtype)
-
-        """
-        for Discrminator
-        """
 
         # Maximize
         d_probs, d_paras = self.create_discriminator_or_learner("Discriminator", self.X, self.Y)
@@ -205,7 +167,6 @@ class EdgeGAN:
 
         ECEE = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=self.Y, logits=classifier_logits),axis=-1)
         CEE = tf.reduce_mean(-tf.reduce_sum(prob_Y* tf.log(classifier_Y ), axis=-1), axis=-1)
-        # 定义损失和训练函数
 
         self.discriminator_loss = tf.reduce_mean(discrminator_objective_term )
         self.train_discriminator_op = self.optimize_with_clip(self.discriminator_loss, var_list=d_paras)
@@ -216,14 +177,10 @@ class EdgeGAN:
         self.classifier_loss = tf.reduce_mean(KL_term)
         self.train_classifier_op = self.optimize_with_clip(self.classifier_loss, var_list=c_paras, global_step=self.global_step)
         self.train_contrasive_op = self.optimize_with_clip(self.contrasive_loss, var_list=c_paras)
-        # TODO Cosine 距离
+
 
         self.debug =  [] # [ECEE,CEE,prob_Y,self.Y]
 
-
-        """
-        For Inference
-        """
         self.classifier_res = d_probs
 
     def optimize_with_clip(self, loss, var_list, global_step=None):
@@ -241,15 +198,14 @@ class EdgeGAN:
         self.saver = tf.train.Saver()
         config = tf.ConfigProto()
         config.gpu_options.allow_growth = True
-        config.log_device_placement = False  #: 是否打印设备分配日志
-        config.allow_soft_placement = True  # ： 如果你指定的设备不存在，允许TF自动分配设备
+        config.log_device_placement = False
+        config.allow_soft_placement = True
         self.sess = tf.Session(config=config)
 
         # check from checkpoint
         ckpt_path = self.config.checkpoint_path
         print('check the checkpoint_path : %s' % ckpt_path)
         ckpt = tf.train.get_checkpoint_state(ckpt_path)
-        # TODO 把步数加入到其中
         if ckpt and ckpt.model_checkpoint_path:
             print('restoring from %s' % ckpt.model_checkpoint_path)
             self.saver.restore(self.sess, ckpt.model_checkpoint_path)
@@ -265,9 +221,6 @@ class EdgeGAN:
         self.saver.save(self.sess, path + 'model.ckpt', global_step=self.global_step)
         print('checkpoint has been saved to :' + path + 'model.ckpt')
 
-    """
-    Training
-    """
     def train_step(self,X_data, Y_data,h,t,ih,it):
         # Discriminator
         batch_size = self.config.batch_size
@@ -290,9 +243,7 @@ class EdgeGAN:
         #loss = classifier_loss
         return step, loss
 
-    """
-    Infer or Test
-    """
+
 
     def infer_step(self, X_data, Y_data):
         # Discriminator
