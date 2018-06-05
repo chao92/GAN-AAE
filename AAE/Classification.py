@@ -1,10 +1,3 @@
-'''
-Seperate evaluation of multi_label_classification from implementation of SDNE 
-
-Author: Chao Jiang
-
-'''
-
 #!/usr/bin/python2
 # -*- coding: utf-8 -*-
 from __future__ import print_function
