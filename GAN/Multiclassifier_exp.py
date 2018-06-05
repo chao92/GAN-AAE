@@ -115,7 +115,6 @@ class MultiClassificationGAN:
             # Loss
             self.D_loss = - tf.reduce_mean(tf.log(D_real) + 0.5*tf.log(1.0-D_fake) + 0.5*tf.log(1.0-D_classifer))
             self.D_real = D_real
-            # 对于判别网络, 希望D_fake尽可能大，这样可以迷惑生成网络，
             self.G_loss = - tf.reduce_mean(tf.log(D_fake))
             # Classifier
             self.C_loss2 = - tf.reduce_mean(tf.log(D_classifer)) + tf.reduce_mean(self.Y * tf.log(+ 1e-10+ self.Y / (predicted_Y + 1e-10)))
@@ -129,7 +128,6 @@ class MultiClassificationGAN:
                 train_op = optimizer.apply_gradients(grads, global_step=global_step)
                 return train_op
 
-            # TODO 参数问题，学习那些参数？
             #  tf.Variable(initial_value=1.0) #
             self.D_optimizer = optimize_with_clip(self.D_loss, var_list=discriminator_vars,
                                                   global_step=self.global_step)
@@ -150,11 +148,6 @@ class MultiClassificationGAN:
         return samples, label
 
     def inference_step(self, X_data):
-        """
-        利用GAN去计算每个分类的类别，X——data会自动的拓展到合适的num数目
-        :param X_data:
-        :return:
-        """
         num_class = self.config.num_class
 
         Y_data = [[i for i in range(num_class)] for x in X_data]
@@ -209,8 +202,8 @@ class MultiClassificationGAN:
         self.saver = tf.train.Saver()
         config = tf.ConfigProto()
         config.gpu_options.allow_growth = True
-        config.log_device_placement = False  #: 是否打印设备分配日志
-        config.allow_soft_placement = True  # ： 如果你指定的设备不存在，允许TF自动分配设备
+        config.log_device_placement = False 
+        config.allow_soft_placement = True 
         self.sess = tf.Session(config=config)
 
         # check from checkpoint
