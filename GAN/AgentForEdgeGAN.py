@@ -8,33 +8,18 @@ import sys
 import os
 
 
-
-
-
-
-
 def main(argv):
 
-    # /ldev/wsx/tmp/netemb/github/dataset/generated_data/eco_blogCatalog3.txt.labeled.reindex BlogTest
     debug = False
-    path = argv[0] #'/ldev/wsx/tmp/netemb/github/dataset/generated_data/eco_blogCatalog3.txt.labeled.reindex'
+    path = argv[0] 
     config = Config()
-    if not debug:
-        print('normal mode')
-        data = DataUtil(path)
-        config.x_dim = data.num_vertex
-        config.input_dim = data.num_vertex
-        config.num_class = data.num_class
-        config.batch_size = 16
-        data.generate_negative_set()
-    else:
-        path = r'C:\Users\v-sixwu\Downloads\all.txt'
-        data = DataUtil(path)
-        config.x_dim = data.num_vertex
-        config.input_dim = data.num_vertex
-        config.num_class = data.num_class
-        config.batch_size = 16
-        data.generate_negative_set(1000)
+    print('normal mode')
+    data = DataUtil(path)
+    config.x_dim = data.num_vertex
+    config.input_dim = data.num_vertex
+    config.num_class = data.num_class
+    config.batch_size = 16
+    data.generate_negative_set()
 
     config.checkpoint_path += argv[1]+'/'
     config.max_step = int(data.edge_nums * config.train_ratio / config.batch_size) + 1
@@ -64,7 +49,7 @@ def main(argv):
             except EOFError as e:
                 print(e)
                 print("Epoch %d is finished" % epoch)
-                break;
+                break
             res = gan.train_step(X, Y, h, t, ih, it)
             if i % config.show_res_per_steps == 0:
                 print(res)

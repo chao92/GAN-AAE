@@ -7,9 +7,9 @@ class Config(object):
 
         # graph data
         
-        self.file_path = "./original_data/"+arg[0]+".txt.sdne" #"/ldev/wsx/tmp/netemb/github/dataset/generated_data/vertex_centic/eco_blogCatalog3.txt.sdne"
-        self.label_file_path =  "./original_data/"+arg[0]+".txt.sdne_group" #"/ldev/wsx/tmp/netemb/github/dataset/generated_data/vertex_centic/eco_blogCatalog3.txt.sdne_group"
-        self.cluster_path = "./original_data/"+arg[0]+".gan.txt"#/ldev/wsx/tmp/netemb/Test-GAN/res.txt"
+        self.file_path = "./original_data/"+arg[0]+".txt.data" 
+        self.label_file_path =  "./original_data/"+arg[0]+".txt.data_group"
+        self.cluster_path = "./original_data/"+arg[0]+".gan.txt"
         
         
         with open(self.label_file_path) as fin:
