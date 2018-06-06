@@ -1,2 +1,7 @@
 # GAN-AAE
-## First Run GAN to do label prediction, then feed the generated output to AAE.
+## Step 1
+Transfrom the raw dataset with the code in preprocess folder
+## Step 2
+Use the tranformed input to do label prediction
+## Step 3
+Feed the generated output to AAE
