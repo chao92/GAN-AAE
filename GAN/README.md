@@ -11,6 +11,6 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--\*.txt.data_group [label of the vertices in the corresponding graph] *For validation 
 ## Usage
 ### Step 1
-python AgentForEdgeGAN.py ./original_data/[input file] [checkpoint name] [trainning rate]
+python3 AgentForEdgeGAN.py ./original_data/[input file] [checkpoint name] [trainning rate]
 ### Step 2
-python Predictor.py ./original_data/[input file] [checkpoint name] ./res/[output file]
+python3 Predictor.py ./original_data/[input file] [checkpoint name] ./res/[output file]
